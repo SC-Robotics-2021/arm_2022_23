@@ -46,8 +46,8 @@ def config_motor(odrv_num, axis_num, shouldClear, PSUChoice):
 
         odrv.config.dc_bus_undervoltage_trip_level = 8.0
         odrv.config.dc_bus_overvoltage_trip_level = 56.0
-        odrv.config.dc_max_positive_current = 20.0
-        odrv.config.dc_max_negative_current = -3.0
+        odrv.config.dc_max_positive_current = 40.0
+        odrv.config.dc_max_negative_current = -20.0
         odrv.config.max_regen_current = 0
         #================================================
 
@@ -80,10 +80,10 @@ def config_motor(odrv_num, axis_num, shouldClear, PSUChoice):
         axis.encoder.config.bandwidth = 500
         #=========================================================
         ##### cause motor to smoke ################
-        axis.motor.config.calibration_current = 2
+        axis.motor.config.calibration_current = 2.78
         ###########################################
 
-        axis.config.calibration_lockin.current = 4
+        axis.config.calibration_lockin.current = 20
         axis.config.calibration_lockin.ramp_time = 0.4
         axis.config.calibration_lockin.ramp_distance = 3.1415927410125732
         axis.config.calibration_lockin.accel = 10
@@ -98,6 +98,10 @@ def config_motor(odrv_num, axis_num, shouldClear, PSUChoice):
         axis.trap_traj.config.vel_limit = 30
         axis.trap_traj.config.accel_limit = 20
         axis.trap_traj.config.decel_limit = 20
+
+
+        
+
 
         axis.controller.config.input_mode = INPUT_MODE_PASSTHROUGH      #INPUT_MODE_VEL_RAMP
         axis.controller.config.control_mode = CONTROL_MODE_VELOCITY_CONTROL
