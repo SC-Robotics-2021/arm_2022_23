@@ -107,11 +107,11 @@ def config_motor(odrv_num, axis_num, shouldClear, PSUChoice):
         axis.motor.motor_thermistor.config.gpio_pin = 1
         
         # axis.motor.motor_thermistor.config.temp_limit_lower = 100
-        # axis.motor.motor_thermistor.config.temp_limit_lower = 120
+        # axis.motor.motor_thermistor.config.temp_limit_upper = 120
 
         #looked better with these values, not sure which to pick
         axis.motor.motor_thermistor.config.temp_limit_lower = 25
-        axis.motor.motor_thermistor.config.temp_limit_lower = 85
+        axis.motor.motor_thermistor.config.temp_limit_upper = 85
         
         # NEEDS TO BE MANUALLY PUT IN ODRIVE TOOL
         #set_motor_thermistor_coeffs(odrv0.axis0, 5000, 5270, 3490, 25, 85)
