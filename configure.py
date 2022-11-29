@@ -100,9 +100,40 @@ def config_motor(odrv_num, axis_num, shouldClear, PSUChoice):
         axis.trap_traj.config.decel_limit = 20
 
 
+        #===================================================================
+        #               thermistor config
+        #===================================================================
+        axis.motor.motor_thermistor.config.enabled = True
+        axis.motor.motor_thermistor.config.gpio_pin = 1
         
+        # axis.motor.motor_thermistor.config.temp_limit_lower = 100
+        # axis.motor.motor_thermistor.config.temp_limit_lower = 120
+
+        #looked better with these values, not sure which to pick
+        axis.motor.motor_thermistor.config.temp_limit_lower = 25
+        axis.motor.motor_thermistor.config.temp_limit_lower = 85
+        
+        # NEEDS TO BE MANUALLY PUT IN ODRIVE TOOL
+        #set_motor_thermistor_coeffs(odrv0.axis0, 5000, 5270, 3490, 25, 85)
+
+        #===========================================================================
+        #               double check
+        #===========================================================================
+            # In [5]: odrv0.axis0.motor.motor_thermistor.config.poly_coefficient_0
+            # Out[5]: -647.2123413085938
+
+            # In [6]: odrv0.axis0.motor.motor_thermistor.config.poly_coefficient_1
+            # Out[6]: 833.781494140625
+
+            # In [7]: odrv0.axis0.motor.motor_thermistor.config.poly_coefficient_2
+            # Out[7]: -467.48223876953125
+
+            # In [8]: odrv0.axis0.motor.motor_thermistor.config.poly_coefficient_3
+            # Out[8]: 132.3001251220703
 
 
+
+        #===================================================================
         axis.controller.config.input_mode = INPUT_MODE_PASSTHROUGH      #INPUT_MODE_VEL_RAMP
         axis.controller.config.control_mode = CONTROL_MODE_VELOCITY_CONTROL
 

@@ -67,6 +67,10 @@ def calib_motor(odrv_num, axis_num):
         logger.debug("Calibrating Hall Polarity... 🤞")
         axis.requested_state = AXIS_STATE_ENCODER_HALL_POLARITY_CALIBRATION
         print("\nOdriveSN: ",odrv_num, "\nState: ", axis.current_state, "\nAxis: ", axis_num)
+        
+        ##########################################################
+        print ("temp :", axis.motor.motor_thermistor.temperature)
+
         while axis.current_state != AXIS_STATE_IDLE:
             time.sleep(2)
 
