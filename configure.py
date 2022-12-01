@@ -2,6 +2,7 @@ import odrive
 from odrive.enums import *
 from fibre.libfibre import ObjectLostError
 from loguru import logger
+from math import pi
 
 #
 def config_motor(odrv_num, axis_num, shouldClear, PSUChoice):
@@ -53,13 +54,22 @@ def config_motor(odrv_num, axis_num, shouldClear, PSUChoice):
 
         #=============MOTOR CONFIGURATION================
         axis.motor.config.pole_pairs = 7
-        axis.motor.config.resistance_calib_max_voltage = 3.0
-        axis.motor.config.motor_type = MOTOR_TYPE_HIGH_CURRENT
-        axis.motor.config.requested_current_range = 40
-        axis.motor.config.current_control_bandwidth = 800
-        axis.motor.config.current_lim = 40
+       
+        #axis.motor.config.resistance_calib_max_voltage = 3.0
+        axis.motor.config.resistance_calib_max_voltage = 20.0
+        
+        # axis.motor.config.motor_type = MOTOR_TYPE_HIGH_CURRENT
+        axis.motor.config.motor_type = MOTOR_TYPE_GIMBAL
+        
+        # axis.motor.config.requested_current_range = 3.0
+        axis.motor.config.requested_current_range = 10.0
+
+        
+        #axis.motor.config.current_control_bandwidth = 800
+        
+        axis.motor.config.current_lim = 2.78
         # 473 is Kv of our neo motor. (Kv = RPM at max throttle)
-        axis.motor.config.torque_constant = 8.27 / 83.4
+        axis.motor.config.torque_constant = 0.114
         #================================================
 
         #================ENCODER CONFIGURATION====================
@@ -75,9 +85,14 @@ def config_motor(odrv_num, axis_num, shouldClear, PSUChoice):
         #When trying to request closed loop state and set vel = 3 got the following errors
         #MotorError.UNKNOWN_TORQUE and MotorError.UNKNOWN_VOLTAGE_COMMAND
         #Set this value to true and all 3 errors went away and it spun ; further research needed.
-        axis.encoder.config.ignore_illegal_hall_state = True
-        axis.encoder.config.calib_scan_distance = 150
-        axis.encoder.config.bandwidth = 500
+        
+        
+        #axis.encoder.config.ignore_illegal_hall_state = True
+
+        axis.encoder.config.calib_scan_distance = 2 * pi * (axis.motor.config.pole_pairs)
+        
+        #axis.encoder.config.bandwidth = 500
+
         #=========================================================
         ##### cause motor to smoke ################
         axis.motor.config.calibration_current = 2.78
@@ -89,15 +104,18 @@ def config_motor(odrv_num, axis_num, shouldClear, PSUChoice):
         axis.config.calibration_lockin.accel = 10
         axis.config.calibration_lockin.vel = 20
 
-        axis.controller.config.vel_limit = 90
+        # axis.controller.config.vel_limit = 90
+        axis.controller.config.vel_limit = 10
+        
         axis.controller.config.pos_gain = 1
         axis.controller.config.vel_gain = \
             0.02 * axis.motor.config.torque_constant * axis.encoder.config.cpr
         axis.controller.config.vel_integrator_gain = \
             0.1 * axis.motor.config.torque_constant * axis.encoder.config.cpr
-        axis.trap_traj.config.vel_limit = 30
-        axis.trap_traj.config.accel_limit = 20
-        axis.trap_traj.config.decel_limit = 20
+        
+        # axis.trap_traj.config.vel_limit = 30
+        axis.trap_traj.config.accel_limit = 2
+        axis.trap_traj.config.decel_limit = 2
 
 
         #===================================================================
