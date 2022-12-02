@@ -55,17 +55,18 @@ def config_motor(odrv_num, axis_num, shouldClear, PSUChoice):
         #=============MOTOR CONFIGURATION================
         axis.motor.config.pole_pairs = 7
        
-        #axis.motor.config.resistance_calib_max_voltage = 3.0
-        axis.motor.config.resistance_calib_max_voltage = 20.0
+        axis.motor.config.resistance_calib_max_voltage = 3.0
+        #axis.motor.config.resistance_calib_max_voltage = 20.0
         
-        # axis.motor.config.motor_type = MOTOR_TYPE_HIGH_CURRENT
-        axis.motor.config.motor_type = MOTOR_TYPE_GIMBAL
+        axis.motor.config.motor_type = MOTOR_TYPE_HIGH_CURRENT
+        # axis.motor.config.motor_type = MOTOR_TYPE_GIMBAL
         
         # axis.motor.config.requested_current_range = 3.0
-        axis.motor.config.requested_current_range = 10.0
+        # axis.motor.config.requested_current_range = 20.0
 
+        axis.motor.config.current_lim_margin = 37.22
         
-        #axis.motor.config.current_control_bandwidth = 800
+        axis.motor.config.current_control_bandwidth = 1000
         
         axis.motor.config.current_lim = 2.78
         # 473 is Kv of our neo motor. (Kv = RPM at max throttle)
@@ -91,7 +92,7 @@ def config_motor(odrv_num, axis_num, shouldClear, PSUChoice):
 
         axis.encoder.config.calib_scan_distance = 2 * pi * (axis.motor.config.pole_pairs)
         
-        #axis.encoder.config.bandwidth = 500
+        axis.encoder.config.bandwidth = 350
 
         #=========================================================
         ##### cause motor to smoke ################
