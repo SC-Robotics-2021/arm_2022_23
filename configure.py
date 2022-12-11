@@ -55,7 +55,7 @@ def config_motor(odrv_num, axis_num, shouldClear, PSUChoice):
         #=============MOTOR CONFIGURATION================
         axis.motor.config.pole_pairs = 7
        
-        axis.motor.config.resistance_calib_max_voltage = 3.0
+        axis.motor.config.resistance_calib_max_voltage = 5.0
         #axis.motor.config.resistance_calib_max_voltage = 20.0
         
         axis.motor.config.motor_type = MOTOR_TYPE_HIGH_CURRENT
@@ -64,7 +64,7 @@ def config_motor(odrv_num, axis_num, shouldClear, PSUChoice):
         # axis.motor.config.requested_current_range = 3.0
         # axis.motor.config.requested_current_range = 20.0
 
-        axis.motor.config.current_lim_margin = 37.22
+        axis.motor.config.current_lim_margin = 2.78
         
         axis.motor.config.current_control_bandwidth = 1000
         
@@ -90,7 +90,7 @@ def config_motor(odrv_num, axis_num, shouldClear, PSUChoice):
         
         #axis.encoder.config.ignore_illegal_hall_state = True
 
-        axis.encoder.config.calib_scan_distance = 2 * pi * (axis.motor.config.pole_pairs)
+        axis.encoder.config.calib_scan_distance = 4 * pi * 7
         
         axis.encoder.config.bandwidth = 350
 
@@ -99,7 +99,7 @@ def config_motor(odrv_num, axis_num, shouldClear, PSUChoice):
         axis.motor.config.calibration_current = 2.78
         ###########################################
 
-        axis.config.calibration_lockin.current = 20
+        axis.config.calibration_lockin.current = 2.78
         axis.config.calibration_lockin.ramp_time = 0.4
         axis.config.calibration_lockin.ramp_distance = 3.1415927410125732
         axis.config.calibration_lockin.accel = 10
