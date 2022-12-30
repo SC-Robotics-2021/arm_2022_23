@@ -38,5 +38,7 @@ if __name__ == "__main__":
     logger.debug("finished 00")
 
     
-    calib_motor(odrv0, 0) 
+    calib_motor(odrv0, 0)
     logger.debug("finished 00")
+
+    test_motor(odrv0)
