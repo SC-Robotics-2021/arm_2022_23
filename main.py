@@ -1,44 +1,68 @@
-"""
-AUTHOR: Max Rehm & Matin Qurbanzadeh
-Project: Odrive Motor configuration
-Date: 10/19/2022
-"""
+# from klampt import IKObjective,IKSolver
+# from klampt.model import ik
 
-from calibrate import calib_motor
-from configure import config_motor
-from find_serial import get_all_odrives
-from test_motor import test_motor
-from loguru import logger
-import threading
-import time
-import odrive
+from callback_api import *
+from src.odrives.calibrate import *
+import src.controller.gamepad_input as gmi
+import subprocess
+
+
+
+AXIS_DEADZONE = 0.3 # Deadzone is 0 to 1 | Note: axis value will be 0 until you move past the deadzone
+MIN_SPEED = -20
+MAX_SPEED = 20
+CREMENT = 5
+
+
+
+def eventHandler(odrv_0, odrv_1=None):
+    # obj = ik.objective(robotlink,local=localpt,world=worldpt)
+    # solver = ik.solver(obj)
+
+    buttonDownEvents = [
+        north, west, south, east,
+        share, options, home,                       
+        l1, r1, l3, r3]
+
+    buttonUpEvents = [
+        northUp, westUp, southUp, eastUp, 
+        shareUp, optionsUp, homeUp, 
+        l1Up, r1Up, l3Up, r3Up]
+
+    hatEvents = [hatNorth, hatSouth, hatWest, hatEast, hatCentered]                     # Set hat callbacks
+    connectionEvents = [onGamepadConnect, onGamepadDisconnect]                          # Set connection callbacks
+    gmi.run_event_loop(buttonDownEvents, buttonUpEvents, hatEvents, connectionEvents)   # Async loop to handle gamepad button events
+
+    speed = 5
+
+    while True:
+        odrv0 = odrive.find_any(serial_number=odrv_0)       # Get odrive object
+        if odrv_1:
+            odrv1 = odrive.find_any(serial_number=odrv_1)   # Get odrive object
+
+        gp = gmi.getGamepad(0)                              # Get gamepad object
+
+        (ls_x, ls_y) = gmi.getLeftStick(gp, AXIS_DEADZONE)  # Get left stick
+        (rs_x, rs_y) = gmi.getRightStick(gp, AXIS_DEADZONE) # Get right stick
+        (l2, r2) = gmi.getTriggers(gp, AXIS_DEADZONE)       # Get triggers
+        (hat_x, hat_y) = gmi.getHat(gp)                     # Get hat
+        
+        if gmi.getButtonValue(gp, 1):
+            ...
+
+        
+        
+
 
 
 
 if __name__ == "__main__":
+    odrives = get_all_odrives()
+    # Odrive 0:  366B385A3030 
+    # Odrive 1:  365F385E3030
+    odrv0 = odrives[0]
+    odrv1 = odrives[1]
 
-    odrv0BLAH = odrive.find_any()
+    calibrate_all_motors(odrv0, odrv1)
+    eventHandler(odrv_0=odrv0, odrv_1=odrv1)
     
-    poo = odrv0BLAH.serial_number
-    print(poo)
-
-    poo1 = hex(odrv0BLAH.serial_number)
-    print(poo1)
-
-    poo2 = poo1.upper()
-    print(poo2)
-
-    poo3 = poo2.replace('0X','')
-
-    odrv0 = str(poo3)
-    print(odrv0)
-
-
-    config_motor(odrv0, 0, True, False) 
-    logger.debug("finished 00")
-
-    
-    calib_motor(odrv0, 0)
-    logger.debug("finished 00")
-
-    test_motor(odrv0)
